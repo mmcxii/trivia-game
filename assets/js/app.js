@@ -4,41 +4,41 @@ const questions = [
         question: 'Question One',
         answers: [
             {
-                option: 'Option One',
+                option: 'Q1: Option One',
                 correct: true,
             },
             {
-                option: 'Option Two',
+                option: 'Q1: Option Two',
                 correct: false,
             },
             {
-                option: 'Option Three',
+                option: 'Q1: Option Three',
                 correct: false,
             },
             {
-                option: 'Option Four',
+                option: 'Q1: Option Four',
                 correct: false,
             },
         ],
-        used: true,
+        used: false,
     },
     {
         question: 'Question Two',
         answers: [
             {
-                option: 'Option One',
+                option: 'Q2: Option One',
                 correct: true,
             },
             {
-                option: 'Option Two',
+                option: 'Q2: Option Two',
                 correct: false,
             },
             {
-                option: 'Option Three',
+                option: 'Q2: Option Three',
                 correct: false,
             },
             {
-                option: 'Option Four',
+                option: 'Q2: Option Four',
                 correct: false,
             },
         ],
@@ -48,19 +48,19 @@ const questions = [
         question: 'Question Three',
         answers: [
             {
-                option: 'Option One',
+                option: 'Q3: Option One',
                 correct: true,
             },
             {
-                option: 'Option Two',
+                option: 'Q3: Option Two',
                 correct: false,
             },
             {
-                option: 'Option Three',
+                option: 'Q3: Option Three',
                 correct: false,
             },
             {
-                option: 'Option Four',
+                option: 'Q3: Option Four',
                 correct: false,
             },
         ],
@@ -70,19 +70,19 @@ const questions = [
         question: 'Question Four',
         answers: [
             {
-                option: 'Option One',
+                option: 'Q4: Option One',
                 correct: true,
             },
             {
-                option: 'Option Two',
+                option: 'Q4: Option Two',
                 correct: false,
             },
             {
-                option: 'Option Three',
+                option: 'Q4: Option Three',
                 correct: false,
             },
             {
-                option: 'Option Four',
+                option: 'Q4: Option Four',
                 correct: false,
             },
         ],
@@ -92,19 +92,19 @@ const questions = [
         question: 'Question Five',
         answers: [
             {
-                option: 'Option One',
+                option: 'Q5: Option One',
                 correct: true,
             },
             {
-                option: 'Option Two',
+                option: 'Q5: Option Two',
                 correct: false,
             },
             {
-                option: 'Option Three',
+                option: 'Q5: Option Three',
                 correct: false,
             },
             {
-                option: 'Option Four',
+                option: 'Q5: Option Four',
                 correct: false,
             },
         ],
@@ -112,8 +112,7 @@ const questions = [
     },
 ];
 
-// Question Card
-function nextQ() {
+function randomQuestion() {
     // Select a question at random
     let nextQ = questions[r(questions.length)];
 
@@ -128,23 +127,73 @@ function nextQ() {
     return nextQ;
 }
 
-$('body').append(nextQ().question);
+// Question Card
+function questionCard(question) {
+    // Pieces
+    const questionCard = $('<div class="question-card">');
+    const questionField = $('<div class="question">').text(question.question);
+    const optionsField = $('<div class="options">');
+    const timerField = $('<div id="timer">');
 
-nextQ().answers.forEach((option) => {
-    $('body')
-        .append($('<br />'))
-        .append(option.option);
-});
+    // Print the question
+    //
+    $('body').append(questionField);
+
+    // Randomize order of answers
+    shuffleAnswers(question.answers);
+
+    // Print possible answers
+    question.answers.forEach((option) => {
+        const optionBtn = $(`<span class="option" value="${option.correct}">`)
+            .text(option.option)
+            .on('click', function() {
+                console.log(this);
+            });
+        optionsField.append(optionBtn);
+    });
+
+    questionCard.append(questionField).append(optionsField);
+
+    // Start timer
+    questionCard.append(timerField.text(timer(30)));
+
+    $('body').append(questionCard);
+}
 
 // Display Question
-
-// Display answers (in random order?)
-// Start timer
+questionCard(randomQuestion());
 
 // answer onClick
+function answerCheck(guess) {
+    if (guess.correct) {
+        console.log(true);
+    } else {
+        console.log(false);
+    }
+}
 // check if true
 // incriment appropriately
 
+function timer(start) {
+    let timeLeft = start;
+
+    setInterval(() => {
+        if (!timeLeft <= 0) {
+            timeLeft -= 1;
+        }
+
+        $('#timer').text(timeLeft);
+    }, 1000);
+
+    return timeLeft;
+}
+
+// Generates random number within a range
 function r(max) {
     return Math.floor(Math.random() * max);
+}
+
+// Randomizes order of answers
+function shuffleAnswers(options) {
+    options.sort(() => Math.random() - 0.5);
 }
