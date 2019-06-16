@@ -112,6 +112,170 @@ const questions = [
     },
 ];
 
+let correct;
+let incorrect;
+let timedOut;
+let userName;
+
+/* Cards */
+
+function welcomeCard() {
+    const $welcomeCard = $('<div class="welcome-card">');
+    const $getStartedBtn = $('<span class="btn">')
+        .text(`Welcome, ${userName}. Please click here to get started`)
+        .on('click', function() {
+            // Begin game and display first question
+            questionCard(randomQuestion());
+        });
+
+    $welcomeCard.append($getStartedBtn);
+
+    $('#app').append($welcomeCard);
+}
+
+// Question Card
+function questionCard(question) {
+    // Pieces
+    const $questionCard = $('<div class="question-card">');
+    const $questionField = $('<div id="question">').text(question.question);
+    const $timerField = $('<div id="timer">').text(timer(5, 'timer')); // Set timer to 30 seconds
+    const $optionsField = $('<div id="options">').on('click', '.option', function() {
+        answerCard(answerCheck(this));
+    });
+
+    // Randomize order of answers
+    shuffleAnswers(question.answers);
+
+    // Print possible answers
+    question.answers.forEach((option) => {
+        const $optionBtn = $(`<span class="btn option" value="${option.correct}">`).text(
+            option.option
+        );
+        $optionsField.append($optionBtn);
+    });
+
+    // Build card
+    $questionCard
+        .append($questionField)
+        .append($timerField)
+        .append($optionsField);
+
+    // Remove previous card and replace with answer card
+    $('#app')
+        .empty()
+        .append($questionCard);
+}
+
+function answerCard(ans) {
+    // Pieces
+    const $answerCard = $('<div class="answer-card">');
+    const $message = $('<div id="message">').text(
+        ans ? `Nice job, ${userName}!` : `Hah! ${userName} you clown!`
+    );
+    const $correct = $(`<span id="correct">`).text(`Correct: ${correct}`);
+    const $incorrect = $('<span id="incorrect">').text(`Incorrect: ${incorrect}`);
+    const $timedOut = $('<span id="timed-out">').text(`Timed Out: ${timedOut}`);
+    const $timer = $('<div id="nextq-timer">').text(timer(5, 'nextq-timer'));
+
+    // Build Card
+    $answerCard
+        .append($message)
+        .append($timer)
+        .append($correct)
+        .append($incorrect)
+        .append($timedOut);
+
+    // Remove previous card and replace with answer card
+    $('#app')
+        .empty()
+        .append($answerCard);
+}
+
+function finalCard() {
+    const $finalCard = $('<div class="final-card">');
+    const $stats = $('<div id="stats">').text(
+        `Your final score was ${correct} out of ${questions.length}.`
+    );
+    if (timedOut !== 0) {
+        $stats.append(
+            $('<span>').text(
+                ` Additionally, you let ${timedOut} ${
+                    timedOut === 1 ? 'question' : 'questions'
+                } go unanswered.`
+            )
+        );
+    }
+
+    // Build Card
+    $finalCard.append($stats);
+
+    // Remove previous card and replace with answer card
+    $('#app')
+        .empty()
+        .append($finalCard);
+}
+
+// answer onClick
+function answerCheck(guess) {
+    // Convert input to jQuery object
+    const $guess = $(guess);
+
+    for (let i = 0; i < questions.length; i++) {
+        // Find the active question
+        if (questions[i].question === $('#question').text()) {
+            for (let j = 0; j < questions[j].answers.length; j++) {
+                // Find the chosen guess
+                if (questions[i].answers[j].option === $guess.text()) {
+                    // Check and mark if the guess is correct or incorrect
+                    if (questions[i].answers[j].correct) {
+                        correct++;
+                        return true;
+                    } else {
+                        incorrect++;
+                        return false;
+                    }
+                } else {
+                    timedOut++;
+                    return false;
+                }
+            }
+        }
+    }
+}
+
+/* Main HTML Functions */
+function renderHeader() {
+    const $title = $('<h1 class="heading">').text('Trivia Game');
+
+    $('body').append($('<header>').append($title));
+}
+
+function renderApp() {
+    const $app = $('<section id="app">');
+
+    $('body').append($('<main>').append($app));
+}
+
+function renderFooter() {
+    const $byLine = $('<div class="by-line">').text(`Nich Secord ©2019`);
+
+    $('body').append($('<footer>').append($byLine));
+}
+
+function init() {
+    // Assign Variables
+    correct = 0;
+    incorrect = 0;
+    timedOut = 0;
+
+    // userName = prompt('Please enter your name:');
+    userName = 'Nich';
+    welcomeCard();
+}
+
+/* Helper Functions */
+
+// Selects a random unused question
 function randomQuestion() {
     // Select a question at random
     let nextQ = questions[r(questions.length)];
@@ -127,64 +291,45 @@ function randomQuestion() {
     return nextQ;
 }
 
-// Question Card
-function questionCard(question) {
-    // Pieces
-    const questionCard = $('<div class="question-card">');
-    const questionField = $('<div class="question">').text(question.question);
-    const optionsField = $('<div class="options">');
-    const timerField = $('<div id="timer">');
-
-    // Print the question
-    //
-    $('body').append(questionField);
-
-    // Randomize order of answers
-    shuffleAnswers(question.answers);
-
-    // Print possible answers
-    question.answers.forEach((option) => {
-        const optionBtn = $(`<span class="option" value="${option.correct}">`)
-            .text(option.option)
-            .on('click', function() {
-                console.log(this);
-            });
-        optionsField.append(optionBtn);
-    });
-
-    questionCard.append(questionField).append(optionsField);
-
-    // Start timer
-    questionCard.append(timerField.text(timer(30)));
-
-    $('body').append(questionCard);
-}
-
-// Display Question
-questionCard(randomQuestion());
-
-// answer onClick
-function answerCheck(guess) {
-    if (guess.correct) {
-        console.log(true);
-    } else {
-        console.log(false);
-    }
-}
-// check if true
-// incriment appropriately
-
-function timer(start) {
+// Counts down time remaining
+function timer(start, location) {
+    // Set the length of the timer
     let timeLeft = start;
 
-    setInterval(() => {
-        if (!timeLeft <= 0) {
-            timeLeft -= 1;
+    const countDown = setInterval(function() {
+        // Decriment
+        timeLeft--;
+
+        // Stop the timer at 0
+        if (timeLeft === 0) {
+            clearInterval(countDown);
+
+            // Load the next page based on the current page
+            switch (location) {
+                case 'timer':
+                    // Load the answer page
+                    answerCard(answerCheck());
+                    break;
+
+                case 'nextq-timer':
+                    // If all questions are answered, end the game
+                    if (correct + incorrect + timedOut === questions.length) {
+                        finalCard();
+                        // Otherwise load the next question
+                    } else {
+                        questionCard(randomQuestion());
+                    }
+                    break;
+            }
         }
 
-        $('#timer').text(timeLeft);
+        // Update html in specified location
+        $(`#${location}`).text(timeLeft);
+
+        // Delay 1 second
     }, 1000);
 
+    // Populates with initial value
     return timeLeft;
 }
 
@@ -197,3 +342,14 @@ function r(max) {
 function shuffleAnswers(options) {
     options.sort(() => Math.random() - 0.5);
 }
+
+// Call Functions
+$(document).ready(function() {
+    // Render Static Components
+    renderHeader();
+    renderApp();
+    renderFooter();
+
+    // Initialize the Game
+    init();
+});
