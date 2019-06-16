@@ -121,7 +121,7 @@ let userName;
 
 function welcomeCard() {
     const $welcomeCard = $('<div class="welcome-card">');
-    const $getStartedBtn = $('<span class="btn">')
+    const $getStartedBtn = $('<button class="btn">')
         .text(`Welcome, ${userName}. Please click here to get started`)
         .on('click', function() {
             // Begin game and display first question
@@ -148,7 +148,7 @@ function questionCard(question) {
 
     // Print possible answers
     question.answers.forEach((option) => {
-        const $optionBtn = $(`<span class="btn option" value="${option.correct}">`).text(
+        const $optionBtn = $(`<button class="btn option" value="${option.correct}">`).text(
             option.option
         );
         $optionsField.append($optionBtn);
@@ -169,13 +169,25 @@ function questionCard(question) {
 function answerCard(ans) {
     // Pieces
     const $answerCard = $('<div class="answer-card">');
-    const $message = $('<div id="message">').text(
-        ans ? `Nice job, ${userName}!` : `Hah! ${userName} you clown!`
-    );
+    const $message = $('<div id="message">');
     const $correct = $(`<span id="correct">`).text(`Correct: ${correct}`);
     const $incorrect = $('<span id="incorrect">').text(`Incorrect: ${incorrect}`);
     const $timedOut = $('<span id="timed-out">').text(`Timed Out: ${timedOut}`);
     const $timer = $('<div id="nextq-timer">').text(timer(5, 'nextq-timer'));
+
+    switch (ans) {
+        case 0:
+            $message.text(`Nice job, ${userName}!`);
+            break;
+
+        case 1:
+            $message.text(`Hah! ${userName} you clown!`);
+            break;
+
+        default:
+            $message.text(`${userName}, you know you have to actually answer the question, right?`);
+            break;
+    }
 
     // Build Card
     $answerCard
@@ -219,6 +231,7 @@ function finalCard() {
 function answerCheck(guess) {
     // Convert input to jQuery object
     const $guess = $(guess);
+    console.log($guess.text());
 
     for (let i = 0; i < questions.length; i++) {
         // Find the active question
@@ -229,14 +242,14 @@ function answerCheck(guess) {
                     // Check and mark if the guess is correct or incorrect
                     if (questions[i].answers[j].correct) {
                         correct++;
-                        return true;
+                        return 0;
                     } else {
                         incorrect++;
-                        return false;
+                        return 1;
                     }
                 } else {
                     timedOut++;
-                    return false;
+                    return 2;
                 }
             }
         }
@@ -322,6 +335,10 @@ function timer(start, location) {
                     break;
             }
         }
+
+        $('.btn').on('click', function() {
+            clearInterval(countDown);
+        });
 
         // Update html in specified location
         $(`#${location}`).text(timeLeft);
