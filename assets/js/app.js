@@ -153,6 +153,7 @@ function questionCard(question) {
         const $optionBtn = $(`<button class="btn option" value="${option.correct}">`).text(
             option.option
         );
+
         $optionsField.append($optionBtn);
     });
 
@@ -284,25 +285,6 @@ function playAgain() {
     init();
 }
 
-/* Main HTML Functions */
-function renderHeader() {
-    const $title = $('<h1 class="heading">').text('Trivia Game');
-
-    $('body').append($('<header>').append($title));
-}
-
-function renderApp() {
-    const $app = $('<section id="app">');
-
-    $('body').append($('<main>').append($app));
-}
-
-function renderFooter() {
-    const $byLine = $('<div class="by-line">').text(`Nich Secord ©2019`);
-
-    $('body').append($('<footer>').append($byLine));
-}
-
 function init() {
     // Assign Variables
     correct = 0;
@@ -388,6 +370,25 @@ function r(max) {
 // Randomizes order of answers
 function shuffleAnswers(options) {
     options.sort(() => Math.random() - 0.5);
+}
+
+/* Main HTML Functions */
+function renderHeader() {
+    const $title = $('<h1 class="heading">').text('Trivia Game');
+
+    $('body').append($('<header>').append($title));
+}
+
+function renderApp() {
+    const $app = $('<section id="app">');
+
+    $('body').append($('<main>').append($app));
+}
+
+function renderFooter() {
+    const $byLine = $('<div class="by-line">').text(`Nich Secord ©2019`);
+
+    $('body').append($('<footer>').append($byLine));
 }
 
 // Call Functions
