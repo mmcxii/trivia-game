@@ -387,8 +387,23 @@ function renderApp() {
 
 function renderFooter() {
     const $byLine = $('<div class="by-line">').text(`Nich Secord ©2019`);
+    const $social = $('<div class="social">')
+        .append(
+            $(
+                '<a class="social-link" href="https://www.github.com/mmcxii"><i class="fab fa-github"></i></a>'
+            )
+        )
+        .append(
+            $(
+                '<a class="social-link" href="https://linkedin.com/in/mmcxii"><i class="fab fa-linkedin-in"></i></a>'
+            )
+        );
 
-    $('body').append($('<footer>').append($byLine));
+    $('body').append(
+        $('<footer>')
+            .append($byLine)
+            .append($social)
+    );
 }
 
 // Call Functions
