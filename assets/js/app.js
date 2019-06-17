@@ -114,13 +114,15 @@ const questions = [
 
 let correct;
 let incorrect;
+let prevQ;
+let prevA;
 let timedOut;
 let userName;
 
 /* Cards */
 
 function welcomeCard() {
-    const $welcomeCard = $('<div class="welcome-card">');
+    const $welcomeCard = $('<div class="card">');
     const $getStartedBtn = $('<button class="btn">')
         .text(`Welcome, ${userName}. Please click here to get started`)
         .on('click', function() {
@@ -136,7 +138,7 @@ function welcomeCard() {
 // Question Card
 function questionCard(question) {
     // Pieces
-    const $questionCard = $('<div class="question-card">');
+    const $questionCard = $('<div class="card">');
     const $questionField = $('<div id="question">').text(question.question);
     const $timerField = $('<div id="timer">').text(timer(5, 'timer')); // Set timer to 30 seconds
     const $optionsField = $('<div id="options">').on('click', '.option', function() {
@@ -168,12 +170,14 @@ function questionCard(question) {
 
 function answerCard(ans) {
     // Pieces
-    const $answerCard = $('<div class="answer-card">');
+    const $answerCard = $('<div class="card">');
     const $message = $('<div id="message">');
     const $correct = $(`<span id="correct">`).text(`Correct: ${correct}`);
     const $incorrect = $('<span id="incorrect">').text(`Incorrect: ${incorrect}`);
     const $timedOut = $('<span id="timed-out">').text(`Timed Out: ${timedOut}`);
     const $timer = $('<div id="nextq-timer">').text(timer(5, 'nextq-timer'));
+    const $prevQ = $('<div id="prev-q">').text(prevQ);
+    const $prevA = $('<div id="prev-a">').text(prevA);
 
     switch (ans) {
         case 0:
@@ -184,7 +188,7 @@ function answerCard(ans) {
             $message.text(`Hah! ${userName} you clown!`);
             break;
 
-        default:
+        case 2:
             $message.text(`${userName}, you know you have to actually answer the question, right?`);
             break;
     }
@@ -192,6 +196,8 @@ function answerCard(ans) {
     // Build Card
     $answerCard
         .append($message)
+        .append($prevQ)
+        .append($prevA)
         .append($timer)
         .append($correct)
         .append($incorrect)
@@ -204,10 +210,16 @@ function answerCard(ans) {
 }
 
 function finalCard() {
-    const $finalCard = $('<div class="final-card">');
+    const $finalCard = $('<div class="card">');
     const $stats = $('<div id="stats">').text(
         `Your final score was ${correct} out of ${questions.length}.`
     );
+    const $playAgainBtn = $('<button class="btn">')
+        .text("Give 'r another go?")
+        .on('click', function() {
+            playAgain();
+        });
+
     if (timedOut !== 0) {
         $stats.append(
             $('<span>').text(
@@ -219,7 +231,7 @@ function finalCard() {
     }
 
     // Build Card
-    $finalCard.append($stats);
+    $finalCard.append($stats).append($playAgainBtn);
 
     // Remove previous card and replace with answer card
     $('#app')
@@ -227,16 +239,26 @@ function finalCard() {
         .append($finalCard);
 }
 
-// answer onClick
+/* Primary Functions */
+
 function answerCheck(guess) {
     // Convert input to jQuery object
     const $guess = $(guess);
-    console.log($guess.text());
+
+    // Store information about previous question
+    prevQ = $('#question').text();
+    prevA = $guess.text();
+
+    // Check if the question was answered
+    if ($guess.text() === '') {
+        timedOut++;
+        return 2;
+    }
 
     for (let i = 0; i < questions.length; i++) {
         // Find the active question
         if (questions[i].question === $('#question').text()) {
-            for (let j = 0; j < questions[j].answers.length; j++) {
+            for (let j = 0; j < questions[i].answers.length; j++) {
                 // Find the chosen guess
                 if (questions[i].answers[j].option === $guess.text()) {
                     // Check and mark if the guess is correct or incorrect
@@ -247,13 +269,19 @@ function answerCheck(guess) {
                         incorrect++;
                         return 1;
                     }
-                } else {
-                    timedOut++;
-                    return 2;
                 }
             }
         }
     }
+}
+
+function playAgain() {
+    for (let i = 0; i < questions.length; i++) {
+        questions[i].used = false;
+    }
+
+    $('#app').empty();
+    init();
 }
 
 /* Main HTML Functions */
@@ -282,6 +310,7 @@ function init() {
     timedOut = 0;
 
     // userName = prompt('Please enter your name:');
+    //
     userName = 'Nich';
     welcomeCard();
 }
@@ -336,6 +365,7 @@ function timer(start, location) {
             }
         }
 
+        // Stop timer when button is clicked
         $('.btn').on('click', function() {
             clearInterval(countDown);
         });
