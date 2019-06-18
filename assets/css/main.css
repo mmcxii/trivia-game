@@ -1,3 +1,11 @@
+.card, .card #options, .btn-welcome, .btn-loop {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  position: absolute;
+}
+
 /* Base */
 * {
   margin: 0;
@@ -25,6 +33,22 @@ footer {
 }
 
 /* Layout */
+header {
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 5px solid red;
+}
+
+.heading {
+  font-size: 36px;
+  margin: 10px auto;
+}
+
+#app {
+  height: 80%;
+  margin: 0 auto;
+}
+
 footer {
   padding: 10px 0;
   text-align: center;
@@ -35,20 +59,15 @@ footer {
 .by-line {
   font-style: italic;
   font-size: 18px;
-  margin: 5px;
+  margin: 10px;
 }
 
 .social {
-  width: 15%;
-  margin: 5px auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  margin: 10px auto;
 }
 
 .social-link {
+  margin: 10px;
   text-decoration: none;
 }
 
@@ -65,6 +84,94 @@ footer {
 }
 
 .social-link i:hover {
+  background-color: #1a1a1a;
+  -webkit-transition: ease-in-out 200ms;
+  transition: ease-in-out 200ms;
+}
+
+.card {
+  width: 80%;
+  height: 50%;
+  border: 2px solid red;
+}
+
+.card #question,
+.card #message,
+.card #prev-q,
+.card #prev-a,
+.card #stats {
+  text-align: center;
+  font-size: 18px;
+  margin: 20px 0;
+}
+
+.card #timer {
+  text-align: end;
+  margin-right: 20px;
+}
+
+.card #timer::before {
+  content: 'Time Remaining: ';
+}
+
+.card #options {
+  width: 80%;
+}
+
+.card #nextq-timer {
+  text-align: end;
+  margin-right: 20px;
+}
+
+.card #nextq-timer::before {
+  content: 'Next Question In: ';
+}
+
+.card #scores {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.card #correct::before {
+  content: 'Correct: ';
+}
+
+.card #incorrect::before {
+  content: 'Incorrect: ';
+}
+
+.card #timed-out::before {
+  content: 'Timed Out: ';
+}
+
+.card .prev-img {
+  display: block;
+  width: 50%;
+  height: 50%;
+  margin: 0 auto;
+  border: 2px solid red;
+}
+
+.btn {
+  color: white;
+  background-color: #333;
+  border: none;
+  padding: 8px 16px;
+  width: 80%;
+  margin: 10px auto;
+  border-radius: 5px;
+  display: block;
+  -webkit-transition: ease-in-out 200ms;
+  transition: ease-in-out 200ms;
+  cursor: pointer;
+}
+
+.btn:hover {
   background-color: #1a1a1a;
   -webkit-transition: ease-in-out 200ms;
   transition: ease-in-out 200ms;

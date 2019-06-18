@@ -123,7 +123,7 @@ let userName;
 
 function welcomeCard() {
     const $welcomeCard = $('<div class="card">');
-    const $getStartedBtn = $('<button class="btn">')
+    const $getStartedBtn = $('<button class="btn btn-welcome">')
         .text(`Welcome, ${userName}. Please click here to get started`)
         .on('click', function() {
             // Begin game and display first question
@@ -140,7 +140,7 @@ function questionCard(question) {
     // Pieces
     const $questionCard = $('<div class="card">');
     const $questionField = $('<div id="question">').text(question.question);
-    const $timerField = $('<div id="timer">').text(timer(5, 'timer')); // Set timer to 30 seconds
+    const $timerField = $('<div id="timer">').text(timer(30, 'timer'));
     const $optionsField = $('<div id="options">').on('click', '.option', function() {
         answerCard(answerCheck(this));
     });
@@ -173,12 +173,14 @@ function answerCard(ans) {
     // Pieces
     const $answerCard = $('<div class="card">');
     const $message = $('<div id="message">');
-    const $correct = $(`<span id="correct">`).text(`Correct: ${correct}`);
-    const $incorrect = $('<span id="incorrect">').text(`Incorrect: ${incorrect}`);
-    const $timedOut = $('<span id="timed-out">').text(`Timed Out: ${timedOut}`);
+    const $scores = $('<div id="scores">');
+    const $correct = $(`<span id="correct">`).text(correct);
+    const $incorrect = $('<span id="incorrect">').text(incorrect);
+    const $timedOut = $('<span id="timed-out">').text(timedOut);
     const $timer = $('<div id="nextq-timer">').text(timer(5, 'nextq-timer'));
     const $prevQ = $('<div id="prev-q">').text(prevQ);
     const $prevA = $('<div id="prev-a">').text(prevA);
+    const $img = $(`<img class='prev-img' src='/assets/img/${slugify(prevA)}' />`);
 
     switch (ans) {
         case 0:
@@ -197,12 +199,16 @@ function answerCard(ans) {
     // Build Card
     $answerCard
         .append($message)
+        .append($timer)
+        .append(
+            $scores
+                .append($correct)
+                .append($incorrect)
+                .append($timedOut)
+        )
         .append($prevQ)
         .append($prevA)
-        .append($timer)
-        .append($correct)
-        .append($incorrect)
-        .append($timedOut);
+        .append($img);
 
     // Remove previous card and replace with answer card
     $('#app')
@@ -215,7 +221,7 @@ function finalCard() {
     const $stats = $('<div id="stats">').text(
         `Your final score was ${correct} out of ${questions.length}.`
     );
-    const $playAgainBtn = $('<button class="btn">')
+    const $playAgainBtn = $('<button class="btn btn-loop">')
         .text("Give 'r another go?")
         .on('click', function() {
             playAgain();
@@ -245,10 +251,6 @@ function finalCard() {
 function answerCheck(guess) {
     // Convert input to jQuery object
     const $guess = $(guess);
-
-    // Store information about previous question
-    prevQ = $('#question').text();
-    prevA = $guess.text();
 
     // Check if the question was answered
     if ($guess.text() === '') {
@@ -312,6 +314,15 @@ function randomQuestion() {
     // Mark the answer as used
     nextQ.used = true;
 
+    // Store Question and Correct Answer for Answer Card
+    prevQ = nextQ.question;
+
+    for (let i = 0; i < nextQ.answers.length; i++) {
+        if (nextQ.answers[i].correct) {
+            prevA = nextQ.answers[i].option;
+        }
+    }
+
     return nextQ;
 }
 
@@ -370,6 +381,11 @@ function r(max) {
 // Randomizes order of answers
 function shuffleAnswers(options) {
     options.sort(() => Math.random() - 0.5);
+}
+
+// Remove spaces and lowercase
+function slugify(answer) {
+    return answer.replace(/\s+/g, '-').toLowerCase();
 }
 
 /* Main HTML Functions */
