@@ -1,0 +1,15 @@
+* {
+    font-family: $body-font;
+    font-size: 20px;
+}
+
+h1 {
+    font-family: $heading-font;
+}
+
+body {
+    background: url(/assets/img/bg_stadium.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 50%;
+}

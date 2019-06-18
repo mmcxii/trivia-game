@@ -1,10 +1,41 @@
 header {
     padding: 10px 0;
     text-align: center;
-    border-bottom: 5px solid red;
+    border-bottom: 5px solid color(accent);
+    background-color: color(dark);
+    color: color(light);
+    z-index: -3;
 }
 
 .heading {
-    font-size: 36px;
+    font-size: 48px;
     margin: 10px auto;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
+
+    &::before,
+    &::after {
+        content: '';
+        height: 100%;
+        position: absolute;
+        display: block;
+    }
+
+    &::before {
+        background: color(dark);
+        z-index: -1;
+        left: -20px;
+        right: -20px;
+    }
+
+    &::after {
+        background: color(accent);
+        width: 100vw;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        z-index: -2;
+    }
 }

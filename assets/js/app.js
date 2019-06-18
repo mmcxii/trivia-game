@@ -190,7 +190,7 @@ function answerCard(ans) {
     const $prevQ = $('<div id="prev-q">').text(prevQ);
     const $prevA = $('<div id="prev-a">').text(prevA);
     const $prevF = $('<div id="prev-f">').text(prevF);
-    const $img = $(`<img class='prev-img' src='/assets/img/${slugify(prevA)}' />`);
+    const $img = $(`<img class='prev-img' src='/assets/img/${slugify(prevA)}.png' />`);
 
     switch (ans) {
         case 0:
@@ -296,7 +296,13 @@ function playAgain() {
     }
 
     $('#app').empty();
-    init();
+
+    // Reset Variables
+    correct = 0;
+    incorrect = 0;
+    timedOut = 0;
+
+    questionCard(randomQuestion());
 }
 
 function init() {
@@ -305,9 +311,6 @@ function init() {
     incorrect = 0;
     timedOut = 0;
 
-    // userName = prompt('Please enter your name:');
-    //
-    userName = 'Nich';
     welcomeCard();
 }
 
@@ -446,6 +449,7 @@ $(document).ready(function() {
     renderApp();
     renderFooter();
 
+    userName = prompt('Please enter your name:');
     // Initialize the Game
     init();
 });

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Balthazar|Roboto&display=swap");
 .card, .card #options, .btn-welcome, .btn-loop {
   top: 50%;
   left: 50%;
@@ -32,16 +33,63 @@ footer {
   margin-top: auto;
 }
 
+* {
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+h1 {
+  font-family: "Balthazar", serif;
+}
+
+body {
+  background: url(/assets/img/bg_stadium.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: 50%;
+}
+
 /* Layout */
 header {
   padding: 10px 0;
   text-align: center;
-  border-bottom: 5px solid red;
+  border-bottom: 5px solid #66c010;
+  background-color: #002145;
+  color: #a5acaf;
+  z-index: -3;
 }
 
 .heading {
-  font-size: 36px;
+  font-size: 48px;
   margin: 10px auto;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  display: inline-block;
+}
+
+.heading::before, .heading::after {
+  content: '';
+  height: 100%;
+  position: absolute;
+  display: block;
+}
+
+.heading::before {
+  background: #002145;
+  z-index: -1;
+  left: -20px;
+  right: -20px;
+}
+
+.heading::after {
+  background: #66c010;
+  width: 100vw;
+  left: 50%;
+  top: 0;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  z-index: -2;
 }
 
 #app {
@@ -52,7 +100,9 @@ header {
 footer {
   padding: 10px 0;
   text-align: center;
-  border-top: 5px solid red;
+  border-top: 5px solid #66c010;
+  background-color: #002145;
+  color: #a5acaf;
 }
 
 /* Components */
@@ -77,14 +127,15 @@ footer {
   line-height: 50px;
   font-size: 25px;
   border-radius: 50%;
-  color: white;
-  background-color: #333;
+  color: #a5acaf;
+  background-color: #002145;
+  border: 1px solid #66c010;
   -webkit-transition: ease-in-out 200ms;
   transition: ease-in-out 200ms;
 }
 
 .social-link i:hover {
-  background-color: #1a1a1a;
+  background-color: #00152c;
   -webkit-transition: ease-in-out 200ms;
   transition: ease-in-out 200ms;
 }
@@ -92,7 +143,11 @@ footer {
 .card {
   width: 80%;
   height: 50%;
-  border: 2px solid red;
+  border: 2px solid #002145;
+  border-radius: 5px;
+  background-color: #a5acaf;
+  opacity: 0.95;
+  color: #002145;
 }
 
 .card #question,
@@ -159,13 +214,11 @@ footer {
   width: 50%;
   height: 50%;
   margin: 0 auto;
-  border: 2px solid red;
+  border: 2px solid #002145;
+  border-radius: 5px;
 }
 
 .btn {
-  color: white;
-  background-color: #333;
-  border: none;
   padding: 8px 16px;
   width: 80%;
   margin: 10px auto;
@@ -174,10 +227,14 @@ footer {
   -webkit-transition: ease-in-out 200ms;
   transition: ease-in-out 200ms;
   cursor: pointer;
+  color: #a5acaf;
+  background-color: #002145;
+  border: 1px solid #66c010;
+  transition: ease-in-out 200ms;
 }
 
 .btn:hover {
-  background-color: #1a1a1a;
+  background-color: #00152c;
   -webkit-transition: ease-in-out 200ms;
   transition: ease-in-out 200ms;
 }

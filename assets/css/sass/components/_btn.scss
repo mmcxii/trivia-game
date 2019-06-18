@@ -1,7 +1,4 @@
 .btn {
-    color: white;
-    background-color: #333;
-    border: none;
     padding: 8px 16px;
     width: 80%;
     margin: 10px auto;
@@ -11,8 +8,14 @@
     transition: ease-in-out 200ms;
     cursor: pointer;
 
+    color: color(light);
+    background-color: color(dark);
+    border: 1px solid color(accent);
+
+    transition: ease-in-out 200ms;
+
     &:hover {
-        background-color: darken(#333, 10);
+        background-color: darken(color(dark), 5);
         transition: ease-in-out 200ms;
     }
 

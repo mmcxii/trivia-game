@@ -4,7 +4,11 @@
     width: 80%;
     height: 50%;
 
-    border: 2px solid red;
+    border: 2px solid color(dark);
+    border-radius: 5px;
+    background-color: color(light);
+    opacity: 0.95;
+    color: color(dark);
 
     #question,
     #message,
@@ -68,6 +72,7 @@
         width: 50%;
         height: 50%;
         margin: 0 auto;
-        border: 2px solid red;
+        border: 2px solid color(dark);
+        border-radius: 5px;
     }
 }
