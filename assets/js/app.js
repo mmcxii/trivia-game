@@ -278,6 +278,7 @@ function answerCheck(guess) {
     }
 }
 
+// Resets all questions to unanswered and starts game over
 function playAgain() {
     for (let i = 0; i < questions.length; i++) {
         questions[i].used = false;
@@ -389,18 +390,22 @@ function slugify(answer) {
 }
 
 /* Main HTML Functions */
+
+// Static Header
 function renderHeader() {
     const $title = $('<h1 class="heading">').text('Trivia Game');
 
     $('body').append($('<header>').append($title));
 }
 
+// Static App Field
 function renderApp() {
     const $app = $('<section id="app">');
 
     $('body').append($('<main>').append($app));
 }
 
+// Static Footer
 function renderFooter() {
     const $byLine = $('<div class="by-line">').text(`Nich Secord ©2019`);
     const $social = $('<div class="social">')
