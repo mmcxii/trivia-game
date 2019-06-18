@@ -10,6 +10,7 @@
     #message,
     #prev-q,
     #prev-a,
+    #prev-f,
     #stats {
         text-align: center;
         font-size: 18px;
@@ -56,6 +57,10 @@
 
     #timed-out::before {
         content: 'Timed Out: ';
+    }
+
+    #prev-f::before {
+        content: 'Fun Fact: ';
     }
 
     .prev-img {

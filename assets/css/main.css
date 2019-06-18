@@ -99,6 +99,7 @@ footer {
 .card #message,
 .card #prev-q,
 .card #prev-a,
+.card #prev-f,
 .card #stats {
   text-align: center;
   font-size: 18px;
@@ -147,6 +148,10 @@ footer {
 
 .card #timed-out::before {
   content: 'Timed Out: ';
+}
+
+.card #prev-f::before {
+  content: 'Fun Fact: ';
 }
 
 .card .prev-img {

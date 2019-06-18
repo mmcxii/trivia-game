@@ -1,110 +1,118 @@
 /* Variables */
 const questions = [
     {
-        question: 'Question One',
+        question: 'Who is the player who caught the famous interception off of "The Tip"?',
         answers: [
             {
-                option: 'Q1: Option One',
+                option: 'Malcolm Smith',
                 correct: true,
+                fact: 'He also won the Super Bowl XLVIII MVP two weeks later.',
             },
             {
-                option: 'Q1: Option Two',
+                option: 'Richard Sherman',
                 correct: false,
             },
             {
-                option: 'Q1: Option Three',
+                option: 'Bobby Wagner',
                 correct: false,
             },
             {
-                option: 'Q1: Option Four',
+                option: 'Earl Thomas III',
                 correct: false,
             },
         ],
         used: false,
     },
     {
-        question: 'Question Two',
+        question: 'What is the name of the Seahawks mascot?',
         answers: [
             {
-                option: 'Q2: Option One',
+                option: 'Blitz',
                 correct: true,
+                fact: 'seahawks.com lists Blitz\'s hobbies as "Reading, Fitness, and Birdwatching"',
             },
             {
-                option: 'Q2: Option Two',
+                option: 'Tamia',
                 correct: false,
             },
             {
-                option: 'Q2: Option Three',
+                option: 'Thunder',
                 correct: false,
             },
             {
-                option: 'Q2: Option Four',
+                option: 'Blue',
                 correct: false,
             },
         ],
         used: false,
     },
     {
-        question: 'Question Three',
+        question: 'Who is the winningest Quarterback in Seahawks history?',
         answers: [
             {
-                option: 'Q3: Option One',
+                option: 'Russell Wilson',
                 correct: true,
+                fact:
+                    'Russell Wilson has won 75 games in his 7 year career, passing Dave Kreig who won 70 games.',
             },
             {
-                option: 'Q3: Option Two',
+                option: 'Matt Hasselbeck',
                 correct: false,
             },
             {
-                option: 'Q3: Option Three',
+                option: 'Dave Kreig',
                 correct: false,
             },
             {
-                option: 'Q3: Option Four',
+                option: 'Charlie Whithurst',
                 correct: false,
             },
         ],
         used: false,
     },
     {
-        question: 'Question Four',
+        question: 'Who was the first player the Seahawks traded for in franchise history?',
         answers: [
             {
-                option: 'Q4: Option One',
+                option: 'WR Steve Largent',
                 correct: true,
+                fact:
+                    'The Oilers signed the undrafted Larget and traded him to Seattle for an 8th round pick in 1977. He went on to be inducted into the Hall of Fame',
             },
             {
-                option: 'Q4: Option Two',
+                option: 'QB Matt Hasselbeck',
                 correct: false,
             },
             {
-                option: 'Q4: Option Three',
+                option: 'QB Dave Kreig',
                 correct: false,
             },
             {
-                option: 'Q4: Option Four',
+                option: 'RB Franco Harris',
                 correct: false,
             },
         ],
         used: false,
     },
     {
-        question: 'Question Five',
+        question: 'When were the Seahawks founded?',
         answers: [
             {
-                option: 'Q5: Option One',
+                option: '1976',
                 correct: true,
+                fact:
+                    'The Seahawks were an expansion team in 1976, along with the Tampa Bay Buccaneers.',
             },
             {
-                option: 'Q5: Option Two',
+                option: '1978',
                 correct: false,
             },
             {
-                option: 'Q5: Option Three',
+                option: '1970',
                 correct: false,
             },
             {
-                option: 'Q5: Option Four',
+                option: '1994',
                 correct: false,
             },
         ],
@@ -116,6 +124,7 @@ let correct;
 let incorrect;
 let prevQ;
 let prevA;
+let prevF;
 let timedOut;
 let userName;
 
@@ -124,7 +133,7 @@ let userName;
 function welcomeCard() {
     const $welcomeCard = $('<div class="card">');
     const $getStartedBtn = $('<button class="btn btn-welcome">')
-        .text(`Welcome, ${userName}. Please click here to get started`)
+        .text(`Welcome to Seahawks Trivia, ${userName}! Please click here to get started.`)
         .on('click', function() {
             // Begin game and display first question
             questionCard(randomQuestion());
@@ -180,6 +189,7 @@ function answerCard(ans) {
     const $timer = $('<div id="nextq-timer">').text(timer(5, 'nextq-timer'));
     const $prevQ = $('<div id="prev-q">').text(prevQ);
     const $prevA = $('<div id="prev-a">').text(prevA);
+    const $prevF = $('<div id="prev-f">').text(prevF);
     const $img = $(`<img class='prev-img' src='/assets/img/${slugify(prevA)}' />`);
 
     switch (ans) {
@@ -208,6 +218,7 @@ function answerCard(ans) {
         )
         .append($prevQ)
         .append($prevA)
+        .append($prevF)
         .append($img);
 
     // Remove previous card and replace with answer card
@@ -321,6 +332,7 @@ function randomQuestion() {
     for (let i = 0; i < nextQ.answers.length; i++) {
         if (nextQ.answers[i].correct) {
             prevA = nextQ.answers[i].option;
+            prevF = nextQ.answers[i].fact;
         }
     }
 
@@ -393,7 +405,7 @@ function slugify(answer) {
 
 // Static Header
 function renderHeader() {
-    const $title = $('<h1 class="heading">').text('Trivia Game');
+    const $title = $('<h1 class="heading">').text('Seahawks Trivia');
 
     $('body').append($('<header>').append($title));
 }
