@@ -120,7 +120,10 @@ const questions = [
     },
 ];
 
+const difficulties = ['easy', 'medium', 'hard', 'very hard'];
+
 let correct;
+let diff;
 let incorrect;
 let prevQ;
 let prevA;
@@ -130,7 +133,32 @@ let userName;
 
 /* Cards */
 
+function startCard() {
+    const $difficultyCard = $('<div class="card">');
+    const $difficultiesField = $('<div id="difficulties">').on('click', '.btn', function() {
+        diff = difficulty(this.value);
+
+        welcomeCard();
+    });
+
+    difficulties.forEach((difficulty) => {
+        const $difficultyBtn = $(
+            `<button class='btn' id="${difficulty}"
+            value=${difficulties.indexOf(difficulty)} />`
+        ).text(difficulty);
+
+        $difficultiesField.append($difficultyBtn);
+    });
+
+    $difficultyCard.append($difficultiesField);
+
+    $('#app')
+        .empty()
+        .append($difficultyCard);
+}
+
 function welcomeCard() {
+    // Pieces
     const $welcomeCard = $('<div class="card">');
     const $getStartedBtn = $('<button class="btn btn-welcome">')
         .text(`Welcome to Seahawks Trivia, ${userName}! Please click here to get started.`)
@@ -141,7 +169,9 @@ function welcomeCard() {
 
     $welcomeCard.append($getStartedBtn);
 
-    $('#app').append($welcomeCard);
+    $('#app')
+        .empty()
+        .append($welcomeCard);
 }
 
 // Question Card
@@ -149,7 +179,7 @@ function questionCard(question) {
     // Pieces
     const $questionCard = $('<div class="card">');
     const $questionField = $('<div id="question">').text(question.question);
-    const $timerField = $('<div id="timer">').text(timer(30, 'timer'));
+    const $timerField = $('<div id="timer">').text(timer(diff, 'timer'));
     const $optionsField = $('<div id="options">').on('click', '.option', function() {
         answerCard(answerCheck(this));
     });
@@ -232,8 +262,9 @@ function finalCard() {
     const $stats = $('<div id="stats">').text(
         `Your final score was ${correct} out of ${questions.length}.`
     );
-    const $playAgainBtn = $('<button class="btn btn-loop">')
-        .text("Give 'r another go?")
+    const $message = $('<div id="message">').text("Let's play again!");
+    const $sameDiffBtn = $('<button class="btn btn-loop">')
+        .text('Play Again')
         .on('click', function() {
             playAgain();
         });
@@ -249,7 +280,10 @@ function finalCard() {
     }
 
     // Build Card
-    $finalCard.append($stats).append($playAgainBtn);
+    $finalCard
+        .append($stats)
+        .append($newDiffBtn)
+        .append($sameDiffBtn);
 
     // Remove previous card and replace with answer card
     $('#app')
@@ -289,6 +323,30 @@ function answerCheck(guess) {
     }
 }
 
+function difficulty(input) {
+    let time;
+
+    switch (parseInt(input)) {
+        case 0:
+            time = 30;
+            break;
+
+        case 1:
+            time = 20;
+            break;
+
+        case 2:
+            time = 10;
+            break;
+
+        case 3:
+            time = 5;
+            break;
+    }
+
+    return time;
+}
+
 // Resets all questions to unanswered and starts game over
 function playAgain() {
     for (let i = 0; i < questions.length; i++) {
@@ -305,13 +363,16 @@ function playAgain() {
     questionCard(randomQuestion());
 }
 
+function newDiff() {}
+
 function init() {
     // Assign Variables
     correct = 0;
     incorrect = 0;
     timedOut = 0;
 
-    welcomeCard();
+    // welcomeCard();
+    startCard();
 }
 
 /* Helper Functions */
