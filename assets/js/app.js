@@ -190,7 +190,7 @@ function answerCard(ans) {
     const $prevQ = $('<div id="prev-q">').text(prevQ);
     const $prevA = $('<div id="prev-a">').text(prevA);
     const $prevF = $('<div id="prev-f">').text(prevF);
-    const $img = $(`<img class='prev-img' src='/assets/img/${slugify(prevA)}.png' />`);
+    const $img = $(`<img class='prev-img' src='assets/img/${slugify(prevA)}.png' />`);
 
     switch (ans) {
         case 0:
