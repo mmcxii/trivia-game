@@ -1,5 +1,6 @@
 header {
     padding: 10px 0;
+    min-height: 10vh;
     text-align: center;
     border-bottom: 5px solid color(accent);
     background-color: color(dark);
@@ -14,28 +15,4 @@ header {
     letter-spacing: 2px;
     position: relative;
     display: inline-block;
-
-    &::before,
-    &::after {
-        content: '';
-        height: 100%;
-        position: absolute;
-        display: block;
-    }
-
-    &::before {
-        background: color(dark);
-        z-index: -1;
-        left: -20px;
-        right: -20px;
-    }
-
-    &::after {
-        background: color(accent);
-        width: 100vw;
-        left: 50%;
-        top: 0;
-        transform: translateX(-50%);
-        z-index: -2;
-    }
 }

@@ -263,7 +263,7 @@ function finalCard() {
         `Your final score was ${correct} out of ${questions.length}.`
     );
     const $message = $('<div id="message">').text("Let's play again!");
-    const $sameDiffBtn = $('<button class="btn btn-loop">')
+    const $playAgainBtn = $('<button class="btn btn-loop">')
         .text('Play Again')
         .on('click', function() {
             playAgain();
@@ -281,9 +281,9 @@ function finalCard() {
 
     // Build Card
     $finalCard
+        .append($message)
         .append($stats)
-        .append($newDiffBtn)
-        .append($sameDiffBtn);
+        .append($playAgainBtn);
 
     // Remove previous card and replace with answer card
     $('#app')
@@ -510,7 +510,8 @@ $(document).ready(function() {
     renderApp();
     renderFooter();
 
-    userName = prompt('Please enter your name:');
     // Initialize the Game
     init();
+
+    userName = prompt('Please enter your name:');
 });

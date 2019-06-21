@@ -1,8 +1,10 @@
 .card {
-    @extend %middle;
-
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     width: 80%;
-    min-height: 50%;
+    padding: 1em;
 
     border: 2px solid color(dark);
     border-radius: 5px;
@@ -22,17 +24,17 @@
     }
 
     #timer {
-        text-align: end;
-        margin-right: 20px;
-
         &::before {
             content: 'Time Remaining: ';
         }
     }
 
-    #options {
-        @extend %middle;
+    #options,
+    #difficulties {
+        display: flex;
+        flex-direction: column;
         width: 80%;
+        margin: 0 auto;
     }
 
     #nextq-timer {
